@@ -16,11 +16,11 @@ service:
   targetPort: 7777
 
 serviceMonitor:
-  enabled: false
-  additionalLabels: {}
-  namespace:
-  interval:
-  scrapeTimeout:
+  enabled: true
+  additionalLabels: {"release":"prometheus-prod"}
+  namespace: monitoring
+  interval: 30s
+  scrapeTimeout: 20s
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -35,10 +35,13 @@ resources: {}
   #  memory: 128Mi
 
 config:
+  server: true
   nats:
     # See https://github.com/helm/charts/blob/master/stable/nats/templates/monitoring-svc.yaml
     service: nats-nats-monitoring
     namespace: default
+    # If nat outside of kubernetes specify url
+    url: nats-1-2.us-west-2.prod.batch.sh
     port: 8222
   metrics:
     channelz: true

@@ -55,7 +55,11 @@ spec:
             {{- if .Values.config.metrics.leafz }}
             - "-leafz"
             {{- end }}
+            {{- if .Values.config.server }}
+            - "http://{{ .Values.config.nats.url}}:{{ .Values.config.nats.port }}"
+            {{- else }}
             - "http://{{ .Values.config.nats.service }}.{{ .Values.config.nats.namespace }}.svc:{{ .Values.config.nats.port }}"
+            {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
